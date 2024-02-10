@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    {% block body %}{% endblock %}
+</body>
+    <script>
+        function exportPdf(){
+        var pdf = new jsPDF();
+        pdf.text(20,20,"Resume Table");
+        pdf.autoTable({html:'#table',
+            startY: 25,
+            theme:'grid',
+            columnStyles:{
+                0:{cellWidth:20},
+                1:{cellWidth:150}
+            },
+            bodyStyles: {lineColor: [1, 1, 1]},
+            styles:{minCellHeight:10}
+        });
+        window.open(URL.createObjectURL(pdf.output("blob")))
+        }
+    </script>
+</html>

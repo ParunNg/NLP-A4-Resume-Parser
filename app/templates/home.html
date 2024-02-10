@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Text Generation</title>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="query_box">
+        <h3 class="web_title">Text Generation</h3>
+        <form action="/" method="POST" enctype="multipart/form-data">
+            <div class="form_inner">
+                <input type="file" name="file" accept=".pdf" required>
+            </div>
+            <input id="submit" type="submit" value="Submit">
+        </form>
+    </div>
+
+</div>
+
+{% if entities %}
+<div class="output">
+    <table style="display: {{ show_table }}", id="table">
+        <tbody>
+            <tr>
+                <td>Entity Type</td>
+                <td>Entities</td>
+            </tr>
+            {% for key, val in entities.items() %}
+            <tr>
+                <td>{{ key }}</td>
+                <td>{{ val }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <button type="button" onclick="exportPdf()" class="btn btn-primary">Export To PDF</button>
+</div>
+{% endif %}
+
+{% endblock %}
