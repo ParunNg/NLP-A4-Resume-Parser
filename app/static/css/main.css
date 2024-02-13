@@ -22,7 +22,7 @@ body {
     margin-right: auto;
 
     position: absolute;
-    width: 500px;
+    width: 300px;
 }
 
 .output {
@@ -39,7 +39,7 @@ body {
 
 .query_box {
     padding-bottom: 5px;
-    background-color: #b8d1ed;
+    background-color: #edd1b8;
     border: 1px solid;
 }
 

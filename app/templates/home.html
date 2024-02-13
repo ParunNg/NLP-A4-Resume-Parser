@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Text Generation</title>
+<title>Resume Parser</title>
 {% endblock %}
 
 {% block body %}
 <div class="content">
     <div class="query_box">
-        <h3 class="web_title">Text Generation</h3>
+        <h3 class="web_title">Resume Parser</h3>
         <form action="/" method="POST" enctype="multipart/form-data">
             <div class="form_inner">
-                <input type="file" name="file" accept=".pdf" required>
+                <input type="file" name="file" accept=".pdf" required multiple>
             </div>
             <input id="submit" type="submit" value="Submit">
         </form>
@@ -18,19 +18,23 @@
 
 </div>
 
-{% if entities %}
+{% if output %}
 <div class="output">
     <table style="display: {{ show_table }}", id="table">
+        <thead>
+            <tr>
+                {% for key in output.keys() %}
+                    <th>{{ key }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
         <tbody>
-            <tr>
-                <td>Entity Type</td>
-                <td>Entities</td>
-            </tr>
-            {% for key, val in entities.items() %}
-            <tr>
-                <td>{{ key }}</td>
-                <td>{{ val }}</td>
-            </tr>
+            {% for i in range(output['FILE']|length) %}
+                <tr>
+                    {% for key in output.keys() %}
+                        <td>{{ output[key][i] }}</td>
+                    {% endfor %}
+                </tr>
             {% endfor %}
         </tbody>
     </table>

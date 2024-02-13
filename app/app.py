@@ -21,41 +21,66 @@ def preprocessing(sentence):
                 
     return " ".join(clean_tokens)
 
-# modified from get_skill function
-def get_entities(text):
-    
-    doc = nlp(text)
-    
-    entities = {}
-    
-    for ent in doc.ents:
-        if ent.label_ in entities:
-            entities[ent.label_].append(ent.text)
-        else:
-            entities[ent.label_] = [ent.text]
-
-    for ent_type in entities.keys():
-        entities[ent_type] = ', '.join(unique_list(entities[ent_type]))
-            
-    return entities
-
 def unique_list(x):
     return list(set(x))
+
+# modified from get_skill function
+def get_entities(resumes):
+
+    ent_types = ['PERSON', 'SKILL', 'PRODUCT', 'ORG']
+
+    output = {
+        'FILE': [],
+        'PERSON': [],
+        'SKILL': [],
+        'PRODUCT': [],
+        'ORG': []
+    }
+    
+    for filename, resume in resumes:
+        doc = nlp(resume)
+        
+        entities = {}
+        
+        for ent in doc.ents:
+            if ent.label_ in ent_types:
+                if ent.label_ in entities:
+                    entities[ent.label_].append(ent.text)
+                else:
+                    entities[ent.label_] = [ent.text]
+
+        for ent_type in ent_types:
+            try:
+                output[ent_type].append(', '.join(unique_list(entities[ent_type])))
+            except:
+                output[ent_type].append('-')
+
+        output['FILE'].append(filename)
+
+    return output
 
 app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
-        reader = PdfReader(request.files['file'])
-        page = reader.pages[0]
-        text = preprocessing(page.extract_text())
-        entities = get_entities(text)
+        # Get the list of files from webpage 
+        files = request.files.getlist("file")
+        resumes = []
 
-        return render_template('home.html', entities=entities)
+        for file in files:
+            reader = PdfReader(file)
+            page = reader.pages[0]
+            resume = preprocessing(page.extract_text())
+            resumes.append((file.filename, resume))
+
+        print(resumes)
+        output = get_entities(resumes)
+
+        return render_template('home.html', output=output)
 
     else:
-        return render_template('home.html', entities=None)
+        return render_template('home.html', output=None)
 
 if __name__ == '__main__':
     app.run(debug=True)
