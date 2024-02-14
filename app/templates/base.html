@@ -13,17 +13,19 @@
 </body>
     <script>
         function exportPdf(){
-        var pdf = new jsPDF();
+        var pdf = new jsPDF({orientation: 'landscape'});
         pdf.text(20,20,"Resume Table");
         pdf.autoTable({html:'#table',
             startY: 25,
             theme:'grid',
             columnStyles:{
-                0:{cellWidth:20},
+                0:{cellWidth:30},
                 1:{cellWidth:40},
                 2:{cellWidth:40},
                 3:{cellWidth:40},
-                4:{cellWidth:40}
+                4:{cellWidth:40},
+                5:{cellWidth:40},
+                6:{cellWidth:40}
             },
             bodyStyles: {lineColor: [1, 1, 1]},
             styles:{minCellHeight:10}
