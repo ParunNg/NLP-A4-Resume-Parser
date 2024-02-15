@@ -12,4 +12,5 @@ Resume Parser application using spaCy's entity rule and matcher.
 6) Optional: Click the 'Export to PDF' button to download the table as PDF file.
 
 ![demonstration](./figures/app_demonstrate.png)
+
 ![demonstration](./figures/export_to_pdf.png)
